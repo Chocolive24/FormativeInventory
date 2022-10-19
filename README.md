@@ -16,6 +16,6 @@ You can use potions, equip and use weapons and consult a map.
 
 
 # Learning objectives :  
-* Describe the principles of object-oriented programming
-* Produce stable code using object-oriented programming
-* Plan and manage the allocated time to successfully meet given milestones and deadlines
+*  Explain the principles of object-oriented programming
+* Design algorithms for specific tasks
+* Apply relevant mathematics concepts to computer game code

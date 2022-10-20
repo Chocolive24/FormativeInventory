@@ -12,5 +12,3 @@ public:
 	bool SetState(bool equipped) { return _equipped = equipped; }
 	virtual void Equip() = 0;
 };
-
-

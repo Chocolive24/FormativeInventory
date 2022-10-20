@@ -36,7 +36,7 @@ namespace Utility
 				}
 			}
 
-			// Prevents the user from entering the value 0.
+			// Prevents the user from entering the value 0 and block the input at 1 value.
 			if (key == 13 && numberTyped != "0")
 			{
 				if (numberTyped.empty())

@@ -8,5 +8,3 @@ public:
 
 	void Use() override;
 };
-
-

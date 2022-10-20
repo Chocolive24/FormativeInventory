@@ -5,4 +5,3 @@ public:
 
 	virtual void Use() = 0;
 };
-

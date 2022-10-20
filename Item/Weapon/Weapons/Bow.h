@@ -9,4 +9,3 @@ public:
 	void Use() override;
 	void Equip() override;
 };
-

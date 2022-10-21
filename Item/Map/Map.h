@@ -2,19 +2,24 @@
 
 #include "../../Item/Item.h"
 
-#include <string>
+enum class MapName
+{
+	SAE,
+	KANTO,
+
+};
 
 class Map : public Item
 {
 private:
 
-	std::string _name;
+	MapName _name;
 
 public:
 
-	Map(std::string name);
+	Map(MapName name);
 
-	std::string GetName() { return _name; }
+	MapName GetMapName() { return _name; }
 
 	void Use() override;
 };

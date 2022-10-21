@@ -41,8 +41,8 @@ void Inventory::CreateInventory()
 	Add(sword);
 	Add(bow);
 
-	auto* saeMap = new Map("Sae");
-	auto* kantoMap = new Map("Kanto");
+	auto* saeMap = new Map(MapName::SAE);
+	auto* kantoMap = new Map(MapName::KANTO);
 
 	Add(saeMap);
 	Add(kantoMap);
@@ -102,6 +102,8 @@ std::string Inventory::DisplayWeaponPocket()
 	return userAnswer;
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+
 std::string Inventory::DisplayMapPocket()
 {
 	std::cout << "============Map===========" << std::endl;
@@ -115,6 +117,37 @@ std::string Inventory::DisplayMapPocket()
 	system("cls");
 
 	return userAnswer;
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+
+void Inventory::ActivateChosenOption()
+{
+	do
+	{
+		std::string userAnswer = DisplayInventory();
+
+		if (userAnswer == "1")
+		{
+			ActivatePotionPocket();
+		}
+
+		else if (userAnswer == "2")
+		{
+			ActivateWeaponPocket();
+		}
+
+		else if (userAnswer == "3")
+		{
+			ActivateMapPocket();
+		}
+
+		else
+		{
+			break;
+		}
+
+	} while (true);
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -147,8 +180,9 @@ void Inventory::ActivatePotionPocket()
 
 void Inventory::ActivateWeaponPocket()
 {
-	auto* sword = GetItem<Sword>();
-	auto* bow = GetItem<Bow>();
+	// Create temporary copy of the weapons from the inventory to use their methods.
+	auto* tmpSword = GetItem<Sword>();
+	auto* tmpBow = GetItem<Bow>();
 
 	do
 	{
@@ -157,25 +191,25 @@ void Inventory::ActivateWeaponPocket()
 		if (userAnswer == "1")
 		{
 			EquipSword();
-			bow->SetState(false);
+			tmpBow->SetState(false);
 		}
 
 		else if (userAnswer == "2")
 		{
 			EquipBow();
-			sword->SetState(false);
+			tmpSword->SetState(false);
 		}
 
 		else if (userAnswer == "3")
 		{
-			if (sword->GetState())
+			if (tmpSword->GetState())
 			{
-				sword->Use();
+				tmpSword->Use();
 			}
 
-			else if (bow->GetState())
+			else if (tmpBow->GetState())
 			{
-				bow->Use();
+				tmpBow->Use();
 			}
 
 			else
@@ -192,10 +226,13 @@ void Inventory::ActivateWeaponPocket()
 	} while (true);
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------
+
 void Inventory::ActivateMapPocket()
 {
-	auto* tmpSaeMap = GetMap<Map>("Sae");
-	auto* tmpKantoMap = GetMap<Map>("Kanto");
+	// Create temporary copy of the maps from the inventory to use their methods.
+	auto* tmpSaeMap = GetMap<Map>(MapName::SAE);
+	auto* tmpKantoMap = GetMap<Map>(MapName::KANTO);
 
 	do
 	{
@@ -217,38 +254,6 @@ void Inventory::ActivateMapPocket()
 		}
 
 	} while (true);
-}
-
-// ------------------------------------------------------------------------------------------------------------------------------
-
-void Inventory::ActivateChosenOption()
-{
-	do
-	{
-		std::string userAnswer = DisplayInventory();
-
-		if (userAnswer == "1")
-		{
-			ActivatePotionPocket();
-		}
-
-		else if (userAnswer == "2")
-		{
-			ActivateWeaponPocket();
-		}
-
-		else if (userAnswer == "3")
-		{
-			ActivateMapPocket();
-		}
-
-		else
-		{
-			break;
-		}
-
-	} while (true);
-	
 }
 
 // ------------------------------------------------------------------------------------------------------------------------------
@@ -338,29 +343,15 @@ template <class T> T* Inventory::GetItem()
 
 // ------------------------------------------------------------------------------------------------------------------------------
 
-template <class T> T* Inventory::GetMap(std::string name)
+template <class T> T* Inventory::GetMap(MapName name)
 {
 	for (Item* item : _items)
 	{
-		if (name == "Sae")
+		if (T* tItem = dynamic_cast<T*>(item))
 		{
-			if (T* tItem = dynamic_cast<T*>(item))
+			if (dynamic_cast<Map*>(tItem)->GetMapName() == name)
 			{
-				if (dynamic_cast<Map*>(tItem)->GetName() == "Sae")
-				{
-					return tItem;
-				}
-			}
-		}
-
-		else if (name == "Kanto")
-		{
-			if (T* tItem = dynamic_cast<T*>(item))
-			{
-				if (dynamic_cast<Map*>(tItem)->GetName() == "Kanto")
-				{
-					return tItem;
-				}
+				return tItem;
 			}
 		}
 	}
